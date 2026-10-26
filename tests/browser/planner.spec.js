@@ -1,6 +1,7 @@
 import {test,expect} from '@playwright/test';
 test.beforeEach(async({page})=>{
   await page.route('https://fonts.googleapis.com/**',route=>route.abort());
+  await page.route('**/api/config',route=>route.fulfill({json:{version:7,firebase:null,chat:false,push:false,vapidPublicKey:null}}));
   await page.goto('/');
   await page.getByLabel('Как к тебе обращаться?').fill('Лена');
   await page.getByRole('button',{name:'Открыть мою вселенную'}).click();

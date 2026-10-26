@@ -4,7 +4,7 @@ import * as cloud from './cloud.js';
 import {shell,esc,icon,button,field,select,longField,taskRow,fmt,fmtDay,time,duration} from './views.js';
 const modal=document.querySelector('#modal'),root=document.querySelector('#shell');
 const ctx={page:'today',taskFilter:'today',goalFilter:'active',goalTab:'tasks',goalId:'',planWeek:'',cycleMonth:'',cycleDate:'',menu:false,news:[],newsLoading:false,newsError:false,chatBusy:false,capabilities:{},user:null,sync:'local',ready:true};
-let renderQueued=false,lastPage='',skipDraft=false;
+let renderQueued=false,lastPage='',skipDraft=false,lastIdentity='device';
 function toast(message){const node=document.querySelector('#toast');node.textContent=message;node.classList.add('show');clearTimeout(toast.timeout);toast.timeout=setTimeout(()=>node.classList.remove('show'),4300);}
 function parseRoute(){const [path]=location.hash.replace(/^#\/?/,'').split('?');const [page,id]=path.split('/');ctx.page=['today','goals','goal','plan','map','kairo','cycle','news','profile'].includes(page)?page:'today';if(page==='goal'){try{ctx.goalId=decodeURIComponent(id||'');}catch{ctx.page='goals';}}ctx.menu=false;}
 function navigate(page,id){location.hash=`/${page}${id?'/'+encodeURIComponent(id):''}`;if(ctx.page===page&&(!id||ctx.goalId===id))render();}
@@ -19,8 +19,10 @@ function restoreDraft(draft){
   const active=[...form.elements].find(e=>e.name===draft.active);active?.focus({preventScroll:true});try{if(draft.start!==null)active?.setSelectionRange(draft.start,draft.start);}catch{}
 }
 function render(){
+  const account=getUser(),identity=account?account.uid+':'+Boolean(account.unverified):'device';
+  if(identity!==lastIdentity){closeModal();pendingBackup.value=null;ctx.chatBusy=false;skipDraft=true;lastIdentity=identity;}
   const draft=!skipDraft&&lastPage===ctx.page?formDraft():null;skipDraft=false;
-  ctx.user=getUser();ctx.sync=syncStatus();ctx.ready=ready();ctx.hasLocal=Boolean(localBackup());
+  ctx.user=getUser();ctx.sync=syncStatus();ctx.syncError=cloud.syncErrorMessage();ctx.ready=ready();ctx.hasLocal=Boolean(localBackup());
   root.innerHTML=shell(state,ctx);lastPage=ctx.page;
   document.body.classList.toggle('no-motion',!state.settings.motion);
   document.body.classList.toggle('has-timer',Boolean(state.timer));document.body.dataset.theme=state.settings.theme;
@@ -29,7 +31,7 @@ function render(){
   updateTimer();
   if(ctx.page==='kairo'){const log=document.querySelector('#chat-messages');if(log)log.scrollTop=log.scrollHeight;}
   if(ctx.page==='news'&&!ctx.news.length&&!ctx.newsLoading&&!ctx.newsError)loadNews();
-  if(!state.profile&&ctx.ready&&!modal.open)welcome();
+  if(!state.profile&&ctx.ready&&!ctx.user?.unverified&&!modal.open)welcome();
   highlightFocusedTask();
 }
 function highlightFocusedTask(){const focus=new URLSearchParams(location.hash.split('?')[1]||'').get('focus');if(focus){const item=[...document.querySelectorAll('[data-occurrence]')].find(n=>n.dataset.occurrence===focus);if(item){item.style.outline='1px solid #c4a4ed';item.style.borderRadius='8px';item.scrollIntoView({block:'center'});}}}
@@ -105,9 +107,11 @@ async function act(value){
   if(action==='google-auth'){await cloud.googleSignIn();closeModal();return;}
   if(action==='reset-password'){const email=modal.querySelector('[name=email]')?.value;if(!email)throw Error('Сначала введи почту.');await cloud.resetPassword(email);toast('Если профиль существует, письмо восстановления отправлено.');return;}
   if(action==='verify'){showModal('Подтверждение почты',`<p class="small muted">Открой письмо от VESPER по адресу ${esc(getUser()?.email)} и перейди по ссылке.</p><div class="row wrap mt">${button('Я подтвердил(а) почту','check-verification')}${button('Отправить письмо снова','resend-verification','secondary')}${button('Выйти','sign-out','ghost')}</div>`);return;}
-  if(action==='check-verification'){await cloud.checkVerification();return;}
+  if(action==='check-verification'){await cloud.checkVerification();closeModal();toast('Почта подтверждена.');requestRender();return;}
+  if(action==='retry-sync'){await cloud.refreshSession();toast('Облачные записи обновлены.');return;}
   if(action==='resend-verification'){await cloud.resendVerification();toast('Письмо отправлено. Проверь также папку «Спам».');return;}
   if(action==='sign-out'){await cloud.signOut();closeModal();toast('Онлайн-профиль закрыт.');return;}
+  if(getUser()?.unverified){await act('verify');return;}
   if(action==='demo'){demo();return;}
   if(action==='confirm-demo'){seedDemo();return;}
   if(!state.profile){welcome();return;}
@@ -202,9 +206,9 @@ async function submit(formNode){
   }
   if(kind==='chat'){
     if(!ctx.user){authForm();return;}if(!ctx.capabilities.chat)throw Error('Свободный ИИ-чат ещё не подключён.');
-    const message=D.text(value.message,'Сообщение',2000),history=Object.values(state.messages).filter(m=>!m.deleted).sort((a,b)=>a.at-b.at).slice(-8).map(m=>({role:m.role,content:m.content}));
+    const message=D.text(value.message,'Сообщение',2000),history=Object.values(state.messages).filter(m=>!m.deleted).sort((a,b)=>a.at-b.at).slice(-8).map(m=>({role:m.role,content:m.content})),requestUid=ctx.user.uid;
     const id=D.uid();skipDraft=true;commit(s=>s.messages[id]={id,role:'user',content:message,at:Date.now(),updatedAt:Date.now()});ctx.chatBusy=true;requestRender();
-    try{const result=await cloud.api('/api/chat',{message,history});commit(s=>{const id=D.uid();s.messages[id]={id,role:'assistant',content:result.reply,at:Date.now(),updatedAt:Date.now()};});}finally{ctx.chatBusy=false;requestRender();}return;
+    try{const result=await cloud.api('/api/chat',{message,history},requestUid);if(getUser()?.uid!==requestUid)return;commit(s=>{const id=D.uid();s.messages[id]={id,role:'assistant',content:result.reply,at:Date.now(),updatedAt:Date.now()};});}finally{ctx.chatBusy=false;requestRender();}return;
   }
 }
 document.addEventListener('click',event=>{const target=event.target.closest('[data-act]');if(!target)return;event.preventDefault();Promise.resolve(act(target.dataset.act)).catch(error=>{const errorBox=modal.open?modal.querySelector('.form-error'):null;if(errorBox)errorBox.textContent=cloud.authMessage(error);else toast(cloud.authMessage(error));});});

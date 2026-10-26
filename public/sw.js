@@ -1,5 +1,5 @@
-const CACHE='vesper-v7-1';
-const SHELL=['/','/index.html','/style.css','/icon.svg','/manifest.webmanifest','/src/app.js','/src/domain.js','/src/views.js','/src/store.js','/src/cloud.js','/assets/kairo.png'];
+const CACHE='vesper-v7-2';
+const SHELL=['/','/index.html','/style.css','/icon.svg','/manifest.webmanifest','/src/app.js','/src/domain.js','/src/views.js','/src/store.js','/src/sync.js','/src/cloud.js','/assets/kairo.png'];
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.all(SHELL.map(url=>cache.add(url).catch(()=>{})));await self.skipWaiting();})());});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{await Promise.all((await caches.keys()).filter(key=>key.startsWith('vesper-')&&key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim();})());});
 self.addEventListener('fetch',event=>{

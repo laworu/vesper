@@ -2,13 +2,15 @@ import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import { timingSafeEqual } from 'node:crypto';
+import { expectedProjectId } from './firebase-config.js';
 export class HttpError extends Error { constructor(status,message){ super(message); this.status=status; } }
 export function json(res,status,body) { res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');return res.status(status).json(body); }
 export function admin() {
   if(!getApps().length) {
     if(!process.env.FIREBASE_SERVICE_ACCOUNT) throw new HttpError(503,'Онлайн-профиль ещё не подключён.');
     let service;try{service=JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);}catch{throw new HttpError(503,'Настройки онлайн-профиля требуют проверки.');}
-    initializeApp({credential:cert(service)});
+    if(service.project_id!==expectedProjectId)throw new HttpError(503,'Сервисный аккаунт должен относиться к проекту vesper-21ef9.');
+    initializeApp({credential:cert(service),projectId:expectedProjectId});
   }
   return {auth:getAuth(),db:getFirestore()};
 }

@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) { return request.auth != null && request.auth.uid == uid && request.auth.token.email_verified == true; }
+    function validRecord(recordId) {
+      let data = request.resource.data;
+      return data.keys().hasAll(['kind','id','body','updatedAt'])
+        && data.keys().hasOnly(['kind','id','body','updatedAt'])
+        && data.id is string && data.id.matches('^[A-Za-z0-9][A-Za-z0-9_.@:-]{0,200}$')
+        && data.body is map && data.updatedAt is number
+        && recordId == data.kind + ':' + data.id
+        && (
+          (data.kind in ['profile','settings','meta'] && data.id == 'main')
+          || (data.kind == 'timer' && data.id == 'active')
+          || (data.kind in ['goals','tasks','occurrences','sessions','attempts','cycleEntries','periods','blocks','messages'] && data.body.id == data.id)
+        );
+    }
+    match /users/{uid}/records/{recordId} {
+      allow read: if owner(uid);
+      allow create, update: if owner(uid) && validRecord(recordId);
+      allow delete: if false;
+    }
+    match /reminders/{reminderId} {
+      allow read: if false;
+      allow create, update: if owner(request.resource.data.uid)
+        && reminderId == request.resource.data.uid + ':' + request.resource.data.id
+        && request.resource.data.keys().hasOnly(['uid','id','sendAt','scheduledAt','status'])
+        && request.resource.data.keys().hasAll(['uid','id','sendAt','scheduledAt','status'])
+        && request.resource.data.id is string
+        && request.resource.data.status in ['pending','done','cancelled']
+        && (request.resource.data.sendAt == null || request.resource.data.sendAt is number)
+        && request.resource.data.scheduledAt is number;
+      allow delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

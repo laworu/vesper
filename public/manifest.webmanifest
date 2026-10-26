@@ -1,0 +1,12 @@
+{
+  "id": "/",
+  "name": "VESPER — твоя вселенная",
+  "short_name": "VESPER",
+  "lang": "ru",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0b19",
+  "theme_color": "#0a0b19",
+  "icons": [{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]
+}

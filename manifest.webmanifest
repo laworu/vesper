@@ -1,1 +1,1 @@
-{"name":"VESPER · твоя вселенная","short_name":"VESPER","start_url":"./","display":"standalone","background_color":"#080a15","theme_color":"#080a15","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{"name":"VESPER · твоя вселенная","short_name":"VESPER","start_url":"/","display":"standalone","background_color":"#080913","theme_color":"#080913","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml"}]}

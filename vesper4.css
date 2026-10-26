@@ -1,0 +1,25 @@
+
+.v4-areas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.v4-pace{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#v4SettingsForm{display:grid;gap:18px}
+.v4-option{position:relative;display:flex;flex-direction:column;gap:10px;min-height:126px;border:1px solid #37334e;background:#1b1b30;padding:17px;border-radius:15px;cursor:pointer}
+.v4-option:has(input:checked){border-color:#ae97f7;background:#292342;box-shadow:inset 0 0 0 1px #69588c}
+.v4-option input{position:absolute;top:14px;right:14px;accent-color:#ac93ee}
+.v4-option b{padding-right:12px}.v4-option small{color:#aaa6c4;line-height:1.6}
+.v4-icon{font-size:24px;color:#bea8ff}
+.v4-check{display:block;margin:17px 0;color:#ded8ee}.v4-check input{accent-color:#b19aef}
+.v4-nebula{background:linear-gradient(135deg,#3b225a,#16142e)}
+.v4-system{background:linear-gradient(135deg,#183955,#121c36)}
+.v4-void{background:radial-gradient(ellipse at 60% 50%,#58304d,#090913 70%)}
+.v4-hero{position:relative;overflow:hidden;min-height:225px;border:1px solid #4a3e70;border-radius:20px;margin-bottom:20px;background:radial-gradient(ellipse at 70% 40%,#694c9a 0%,#261e48 35%,#0a0b1b 78%)}
+.v4-hero.v4-system{background:radial-gradient(circle at 75% 50%,#b8a8b4 0%,#52628d 5%,#223c62 18%,#0a1429 65%,#070913 100%)}
+.v4-hero.v4-void{background:radial-gradient(ellipse at 72% 50%,#080812 0%,#080812 13%,#db8e8a 15%,#54345b 19%,#0a0915 43%,#070810 100%)}
+.v4-hero:after{content:"";position:absolute;inset:0;background-image:radial-gradient(#fff8 1px,transparent 1px);background-size:49px 47px;opacity:.27;pointer-events:none}
+.v4-hero-content{position:relative;z-index:1;padding:30px;max-width:510px}
+.v4-hero h2{font-size:clamp(21px,3vw,32px);margin:12px 0}.v4-hero p{color:#d0c6e9}
+.v4-stats{margin-bottom:18px}.v4-columns{margin-bottom:18px}
+.v4-section-title{margin:24px 0 14px;font-size:19px}
+.v4-low{color:#eaa0ba}.v4-hint,.v4-block{margin-top:18px}
+.v4-skill{margin:16px 0}.v4-skill .progress{margin-top:9px}
+@media(max-width:1050px){.v4-areas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.v4-pace{grid-template-columns:1fr}.v4-areas{grid-template-columns:repeat(2,minmax(0,1fr))}.v4-hero-content{padding:20px}.v4-hero{min-height:180px}.v4-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}

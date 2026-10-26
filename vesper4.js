@@ -121,4 +121,4 @@ document.addEventListener('submit',function(e){
   db.stars+=2;save();render();toast('Чтение сохранено в архиве');
  }
 });
-if(db.profile){page='dashboard';render()}
+// VESPER 5 initializes the view after all enhancement modules load.

@@ -1,14 +1,24 @@
+/* VESPER 5.0 — layout and goal map */
+.v5-actions{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 20px}.v5-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}.v5-space{height:min(58vw,520px);min-height:350px;border-color:#4b3e70;box-shadow:0 20px 65px #04020d66}.v5-space .space-overlay{pointer-events:none}.v5-planet{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;flex-direction:column;gap:4px;max-width:138px;min-width:78px;background:none;border:0;padding:5px;color:#fff;cursor:pointer;pointer-events:auto;z-index:4}.v5-orb{width:clamp(24px,3.4vw,40px);height:clamp(24px,3.4vw,40px);border-radius:50%;background:radial-gradient(circle at 28% 24%,#eaeaff,hsl(var(--h) 72% 72%) 21%,hsl(var(--h) 56% 42%) 60%,#0a0718 95%);box-shadow:0 0 19px hsl(var(--h) 75% 65% / .65),inset -7px -8px 12px #050414a8;transition:transform .2s}.v5-planet:hover .v5-orb,.v5-planet:focus-visible .v5-orb{transform:scale(1.25)}.v5-planet-name{max-width:132px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;font-weight:750;text-shadow:0 2px 7px #000}.v5-planet small{text-shadow:0 2px 7px #000;color:#e0d5f7}.v5-below{margin-top:18px}.v5-goalgrid,.v5-area-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}.v5-goalcard{padding:17px;background:#17172a;border:1px solid #36304d;border-radius:15px}.v5-goalcard h3{margin:14px 0}.v5-goalcard .v5-actions{margin:10px 0 0}.v5-skill{margin:15px 0}.v5-skill .progress{margin-top:7px}.v5-actions .btn{white-space:normal}#nav button{min-height:44px}details summary{cursor:pointer;padding:13px 0}@media(max-width:650px){.v5-stats{gap:8px}.v5-stats .panel{padding:11px}.v5-stats strong{font-size:21px}.v5-space{height:400px;min-height:360px}.v5-goalgrid,.v5-area-grid{grid-template-columns:1fr}.v5-planet-name{max-width:85px;font-size:10px}}@media(prefers-reduced-motion:reduce){.v5-orb{transition:none}}
 
-.v5-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 20px}
-.v5-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.v5-space{height:480px;border:1px solid #554575}
-.v5-space .space-overlay{pointer-events:none}
-.v5-planet{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;max-width:130px;min-width:80px;padding:6px;background:none;border:0;color:#fff;cursor:pointer;pointer-events:auto}
-.v5-orb{width:35px;height:35px;border-radius:50%;background:radial-gradient(circle at 30% 22%,#fff,hsl(var(--h) 78% 74%) 24%,hsl(var(--h) 62% 38%) 65%,#100b21);box-shadow:0 0 20px hsl(var(--h) 75% 68% / .6),inset -6px -6px 10px #09091b;transition:transform .2s}
-.v5-planet:hover .v5-orb,.v5-planet:focus-visible .v5-orb{transform:scale(1.22)}
-.v5-planet-name{font-size:11px;font-weight:700;white-space:nowrap;max-width:125px;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 7px #000}
-.v5-planet small{color:#d6c9f6;text-shadow:0 2px 6px #000}
-.v5-below{margin-top:18px}
-.v5-area-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-@media(max-width:650px){.v5-space{height:390px}.v5-stats{gap:7px}.v5-stats .panel{padding:12px}.v5-stats strong{font-size:21px}.v5-area-grid{grid-template-columns:1fr}.v5-planet-name{max-width:85px}}
-@media(prefers-reduced-motion:reduce){.v5-orb{transition:none}}
+/* Repair: allow clicks through overlay and prioritize planet targets. */
+.v5-space #spaceLabels{pointer-events:auto!important;z-index:5!important}
+.v5-space #spaceLabels .v5-planet{pointer-events:auto!important;touch-action:manipulation;z-index:6!important}
+.v5-space .space-top{z-index:7}
+
+/* Final polish: clickable planets, readable panels and goal-linked tasks */
+.v5-space #spaceLabels{z-index:5;pointer-events:none!important}
+.v5-space #spaceLabels .v5-planet{pointer-events:auto!important;touch-action:manipulation;min-height:60px;min-width:72px}
+.v5-space .space-top{z-index:7}
+.v5-linked{margin-top:18px}
+.v5-mission-back{margin:0 0 16px}
+.v5-actions button{min-height:36px}
+.v5-goalcard{background:linear-gradient(155deg,#24213b,#151525)}
+.v5-goalcard:hover{border-color:#8d75cf}
+@media(max-width:650px){.v5-space .space-top .eyebrow{font-size:9px}.v5-space .space-help{font-size:10px}.v5-planet{max-width:90px}.v5-orb{width:30px;height:30px}}
+/* Static atmospheric fallback when Canvas animation is unavailable. */
+.v5-space{background:radial-gradient(ellipse at 49% 51%,#b2a2ff 0%,#7353c6 3%,#43317c 9%,#19204b 28%,#090c24 58%,#050611 100%)}
+.v5-space.theme-system{background:radial-gradient(ellipse at 50% 52%,#ffefc2 0%,#e5a86e 3%,#2c4871 16%,#101d38 43%,#050914 100%)}
+.v5-space.theme-void{background:radial-gradient(ellipse at 50% 52%,#02030a 0%,#02030a 10%,#d4947b 13%,#754969 16%,#231831 27%,#060711 65%)}
+.v5-space:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.36;background-image:radial-gradient(#fff 0.7px,transparent 1px),radial-gradient(#bcaaff 0.8px,transparent 1px);background-size:47px 57px,79px 89px;background-position:9px 13px,35px 52px}
+.v5-space #spaceCanvas{position:relative;z-index:2}

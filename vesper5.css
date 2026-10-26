@@ -1,0 +1,14 @@
+
+.v5-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 20px}
+.v5-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.v5-space{height:480px;border:1px solid #554575}
+.v5-space .space-overlay{pointer-events:none}
+.v5-planet{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;max-width:130px;min-width:80px;padding:6px;background:none;border:0;color:#fff;cursor:pointer;pointer-events:auto}
+.v5-orb{width:35px;height:35px;border-radius:50%;background:radial-gradient(circle at 30% 22%,#fff,hsl(var(--h) 78% 74%) 24%,hsl(var(--h) 62% 38%) 65%,#100b21);box-shadow:0 0 20px hsl(var(--h) 75% 68% / .6),inset -6px -6px 10px #09091b;transition:transform .2s}
+.v5-planet:hover .v5-orb,.v5-planet:focus-visible .v5-orb{transform:scale(1.22)}
+.v5-planet-name{font-size:11px;font-weight:700;white-space:nowrap;max-width:125px;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 7px #000}
+.v5-planet small{color:#d6c9f6;text-shadow:0 2px 6px #000}
+.v5-below{margin-top:18px}
+.v5-area-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+@media(max-width:650px){.v5-space{height:390px}.v5-stats{gap:7px}.v5-stats .panel{padding:12px}.v5-stats strong{font-size:21px}.v5-area-grid{grid-template-columns:1fr}.v5-planet-name{max-width:85px}}
+@media(prefers-reduced-motion:reduce){.v5-orb{transition:none}}

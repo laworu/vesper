@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) { return request.auth != null && request.auth.uid == uid && request.auth.token.email_verified == true; }
+    match /users/{uid}/records/{recordId} {
+      allow read: if owner(uid);
+      allow create, update: if owner(uid)
+        && request.resource.data.keys().hasOnly(['kind', 'id', 'body', 'updatedAt'])
+        && request.resource.data.kind in ['profile','settings','meta','goals','tasks','occurrences','sessions','attempts','cycleEntries','periods','blocks','messages','timer']
+        && request.resource.data.id is string && request.resource.data.body is map
+        && recordId == request.resource.data.kind + ':' + request.resource.data.id;
+      allow delete: if false;
+    }
+    match /reminders/{reminderId} {
+      allow read: if false;
+      allow create, update: if owner(request.resource.data.uid)
+        && reminderId == request.resource.data.uid + ':' + request.resource.data.id
+        && request.resource.data.keys().hasOnly(['uid','id','sendAt','scheduledAt','status'])
+        && (request.resource.data.sendAt == null || request.resource.data.sendAt is number)
+        && request.resource.data.scheduledAt is number;
+      allow delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

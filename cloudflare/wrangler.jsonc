@@ -1,0 +1,6 @@
+{
+  "name": "vesper-reminders",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-26",
+  "triggers": { "crons": ["* * * * *"] }
+}

@@ -1,0 +1,35 @@
+/* VESPER Cosmic Portal */
+body.v6-map-mode{overflow:hidden}body.v6-map-mode .sidebar,body.v6-map-mode .topbar{display:none!important}
+body.v6-map-mode #app{display:block;height:100dvh;min-height:0}body.v6-map-mode .main{height:100dvh;width:100%}
+body.v6-map-mode #view{padding:0;max-width:none;margin:0;height:100dvh;overflow:hidden}
+.v6-map-wrap{position:relative;width:100%;height:100dvh;min-height:460px;overflow:hidden;background:#040511;isolation:isolate}
+.v6-map-wrap canvas{width:100%;height:100%;display:block}
+.v6-map-wrap .space-overlay{pointer-events:none;z-index:3}
+.v6-map-wrap .v5-planet{pointer-events:auto;z-index:4;max-width:110px}
+.v6-map-wrap .v5-orb{width:24px;height:24px;opacity:.92}
+.v6-map-wrap .v5-planet-name{font-size:10px;max-width:95px}
+.v6-map-nodes{position:absolute;inset:0;pointer-events:none;z-index:5}
+.v6-map-node{position:absolute;transform:translate(-50%,-50%);background:transparent;border:0;color:#f6f2ff;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;pointer-events:auto;min-width:120px;text-shadow:0 2px 12px #01010b;transition:filter .25s}
+.v6-map-node:hover,.v6-map-node:focus-visible{filter:brightness(1.3)}
+.v6-node-body{width:clamp(48px,7vw,82px);height:clamp(48px,7vw,82px);border-radius:50%;background:radial-gradient(circle at 29% 22%,#fff9,#bdabff 19%,#7254c2 48%,#191338 82%);box-shadow:0 0 28px #9975ed99,0 0 60px #4b3b9c66,inset -10px -14px 18px #09051f;position:relative;transition:transform .3s}
+.v6-map-node:hover .v6-node-body{transform:scale(1.12)}
+.v6-node-core .v6-node-body{width:clamp(105px,14vw,175px);height:clamp(105px,14vw,175px);background:radial-gradient(circle at 45% 42%,#fff 0%,#f2e6ff 9%,#b7a1ff 26%,#8060df 46%,#382567 64%,#120d29 83%);box-shadow:0 0 60px #a88affc0,0 0 130px #6243bc8c,0 0 230px #4731a255}
+.v6-node-core .v6-node-body:after{content:'';position:absolute;inset:-17%;border:1px solid #b3a1ff73;border-radius:50%;transform:rotate(-24deg) scaleY(.42)}
+.v6-node-settings .v6-node-body{background:radial-gradient(circle at 30% 25%,#e4e8ff,#7c91c9 27%,#343d70 65%,#0a1025)}
+.v6-node-account .v6-node-body{background:radial-gradient(circle at 30% 24%,#fbe9ff,#c28be0 28%,#6b377d 67%,#1c0c2a)}
+.v6-node-goals .v6-node-body{background:radial-gradient(circle at 30% 24%,#fff3e1,#cda47f 26%,#6b3f61 66%,#190e26)}
+.v6-node-areas .v6-node-body{background:radial-gradient(circle at 30% 24%,#e2fffb,#6ac5ca 27%,#2d6580 65%,#09172a)}
+.v6-node-development .v6-node-body{background:radial-gradient(circle at 30% 24%,#fff4ff,#c6a2ef 25%,#4c3e99 70%,#0e0c25)}
+.v6-node-label{font-size:13px;font-weight:800;letter-spacing:.2px;white-space:nowrap}
+.v6-map-node small{color:#c4bcd8;font-size:10px;white-space:nowrap}
+.v6-map-header{position:absolute;z-index:7;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:25px 30px;pointer-events:none}
+.v6-map-brand{display:flex;align-items:center;gap:12px;pointer-events:auto}.v6-brand-star{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;background:#7154c1a3;color:#fff;font-size:25px}.v6-map-brand b{display:block;font-size:20px;letter-spacing:4px}.v6-map-brand small{display:block;font-size:9px;letter-spacing:2px;color:#a7a1c4}
+.v6-map-tools{display:flex;gap:8px;pointer-events:auto}.v6-map-footer{position:absolute;bottom:20px;left:30px;right:30px;z-index:7;display:flex;justify-content:space-between;color:#a49cbd;font-size:11px;pointer-events:none}
+body.v6-warping #view{animation:v6warp .3s ease-in forwards}@keyframes v6warp{to{opacity:.1;filter:blur(14px);transform:scale(1.035)}}
+.v6-page{max-width:1250px;margin:auto}.v6-welcome{border:1px solid #52447c;border-radius:24px;padding:32px;min-height:230px;display:flex;align-items:center;justify-content:space-between;background:radial-gradient(circle at 80% 50%,#3d2b70 0%,#17142f 39%,#101323 80%);overflow:hidden}
+.v6-welcome h2{font-size:clamp(22px,3vw,32px);max-width:520px;line-height:1.25}.v6-welcome p{color:#b6b0ce}.v6-welcome-orb{flex:none;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#e8dcff,#9175e2 30%,#34276a 67%,#0c0c24);box-shadow:0 0 75px #9874e888;margin-right:6%}
+.v6-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}.v6-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-top:18px}.v6-content{margin-top:18px}.v6-goal-line{padding:12px 0;border-bottom:1px solid #303049}.v6-goal-line .progress{margin:10px 0}.v6-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.v6-quick button{background:#211e37;border:1px solid #383454;color:#eae3ff;border-radius:13px;padding:16px;cursor:pointer;text-align:left}.v6-quick button span{display:block;font-size:25px;color:#b6a2fa;margin-bottom:8px}
+.v6-account-hero{display:flex;align-items:center;gap:24px;padding:26px;background:linear-gradient(110deg,#221b3d,#111628);border:1px solid #4d426e;border-radius:22px}.v6-account-hero h2{font-size:27px;margin:8px 0}.v6-account-hero>.btn{margin-left:auto}.v6-avatar{display:grid;place-items:center;width:90px;height:90px;flex:none;border-radius:50%;background:radial-gradient(circle at 32% 20%,#cfb6ff,#6851ac 60%,#23183e);box-shadow:0 0 35px #7756bd88;font-size:43px}
+@media(max-width:800px){.v6-map-header{padding:15px}.v6-map-footer{left:16px;right:16px}.v6-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.v6-welcome-orb{width:100px;height:100px;margin:0}.v6-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.v6-map-brand b{font-size:15px}.v6-map-brand small{font-size:8px}.v6-map-tools .btn{padding:7px 9px;font-size:10px}.v6-map-node{min-width:85px;gap:4px}.v6-node-body{width:46px;height:46px}.v6-node-core .v6-node-body{width:100px;height:100px}.v6-node-label{font-size:10px}.v6-map-node small{font-size:8px}.v6-node-settings{left:20%!important;top:30%!important}.v6-node-account{left:78%!important;top:30%!important}.v6-node-goals{left:18%!important;top:69%!important}.v6-node-areas{left:81%!important;top:69%!important}.v6-node-development{top:86%!important}.v6-map-wrap .v5-planet{max-width:75px}.v6-map-wrap .v5-planet-name{max-width:72px;font-size:9px}.v6-map-footer span:last-child{display:none}.v6-welcome{padding:21px}.v6-welcome-orb{display:none}.v6-account-hero{flex-wrap:wrap;padding:19px}.v6-account-hero>.btn{margin-left:0}.v6-avatar{width:66px;height:66px}.v6-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){body.v6-warping #view{animation:none}.v6-node-body{transition:none}}

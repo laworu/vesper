@@ -1,4 +1,4 @@
-import { route, json, HttpError } from '../server/core.js';
+import { route, json, HttpError } from '../server/http.js';
 import { firebaseWebConfig, expectedProjectId } from '../server/firebase-config.js';
 export default route(async(req,res)=>{
   let firebase=null;
